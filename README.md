@@ -1,5 +1,5 @@
 # ctrace
-Canonical OpenTracing.  ctrace is a Canonical [OpenTracing](http://opentracing.io/) output specification.  
+Canonical Trace.  ctrace is a Canonical [OpenTracing](http://opentracing.io/) output specification.  
 
 ## Why
 [OpenTracing](http://opentracing.io) is a young specification and for most (if not all) SDK implementations, output format and wire protocol are specific to the backend platform implementation.  ctrace attempts to decouple the format and wire protocol from the backend tracer implementation.
@@ -55,7 +55,7 @@ for Standard Tags.  They are also listed here.
 
 |Tag|Type|Description|Examples|
 |---|----|-----------|--------|
-|error|bool|"true" if and only if the associated Span is in an error state||
+|error|bool|true if and only if the associated Span is in an error state||
 |component|string|The software package, framework, library, or module that generated the associated Span|"grpc", "django", "JDBI"|
 |http.url|string|URL of the request being handled in this segment of the trace, in standard URI format|"https://domain.net/path/to?resource=here"|
 |http.method|string|HTTP method of the request for the associated Span|"GET", "POST"|
@@ -70,10 +70,11 @@ for Standard Tags.  They are also listed here.
 ### Recommended Tags
 The following are tags we recommend.
 
-|Tag|Type|Description|Examples|
-|---|----|-----------|--------|
-|exception|string|Error message and/or stack trace.  Should be included if error=true.| |
-|http.user_agent|string|HTTP UserAgent Header field.| |
+|Tag|Type|Description|
+|---|----|-----------|
+|debug|bool|true if the Log is considered a debug log.  This can be used by ctrace implementations to exclude debug Logs from output.|
+|exception|string|Error message and/or stack trace.  Should be included if error=true.|
+|http.user_agent|string|HTTP UserAgent Header field.|
 
 
 ## Start-Span
