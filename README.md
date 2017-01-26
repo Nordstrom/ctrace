@@ -86,9 +86,9 @@ in the Span at this time is output to the writable stream.  Here is an example.
   "traceId": "0308745a0f03491b",
   "spanId": "940a9f22e7294a8c",
   "parentId": "19d0ea9d414f47f1",
-	"operation": "CreateProduct",
-	"start": 1458702548467393239,
-	"tags": {
+  "operation": "CreateProduct",
+  "start": 1458702548467393239,
+  "tags": {
     "component": "ProductUpdater",
     "span.kind": "server",
     "http.url": "https://api.nordstrom.com/v1/products",
@@ -98,11 +98,11 @@ in the Span at this time is output to the writable stream.  Here is an example.
     "styleId": "29392832",
     "sku": "293820133",
     "label": "New Pump"
-	},
-	"log": {
-		"timestamp": 1458702548467393239,
-		"event": "Start-Span"
-	}
+  },
+  "log": {
+  	"timestamp": 1458702548467393239,
+  	"event": "Start-Span"
+  }
 }
 ```
 
@@ -116,9 +116,9 @@ populated by the key/values passed into the Log method.  Here is an example.
   "traceId": "0308745a0f03491b",
   "spanId": "940a9f22e7294a8c",
   "parentId": "19d0ea9d414f47f1",
-	"operation": "CreateProduct",
-	"start": 1458702548467393239,
-	"tags": {
+  "operation": "CreateProduct",
+  "start": 1458702548467393239,
+  "tags": {
     "component": "ProductUpdater",
     "span.kind": "server",
     "http.url": "https://api.nordstrom.com/v1/products",
@@ -128,13 +128,13 @@ populated by the key/values passed into the Log method.  Here is an example.
     "styleId": "29392832",
     "sku": "293820133",
     "label": "New Pump"
-	},
-	"log": {
-		"timestamp": 1458702548467399939,
-		"event": "UpdateProductRecord",
+  },
+  "log": {
+    "timestamp": 1458702548467399939,
+    "event": "UpdateProductRecord",
     "table": "Products",
     "transactionId": "xxxy39282"
-	}
+  }
 }
 ```
 
@@ -147,10 +147,10 @@ in the Span at this time is output to the writable stream.  Here is an example.
   "traceId": "0308745a0f03491b",
   "spanId": "940a9f22e7294a8c",
   "parentId": "19d0ea9d414f47f1",
-	"operation": "CreateProduct",
-	"start": 1458702548467393239,
+  "operation": "CreateProduct",
+  "start": 1458702548467393239,
   "duration": 738,
-	"tags": {
+  "tags": {
     "component": "ProductUpdater",
     "span.kind": "server",
     "http.url": "https://api.nordstrom.com/v1/products",
@@ -161,10 +161,10 @@ in the Span at this time is output to the writable stream.  Here is an example.
     "styleId": "29392832",
     "sku": "293820133",
     "label": "New Pump"
-	},
-	"log": {
-		"timestamp": 1458702548467393239,
-		"event": "Finish-Span"
-	}
+  },
+  "log": {
+    "timestamp": 1458702548467393239,
+    "event": "Finish-Span"
+  }
 }
 ```
