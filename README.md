@@ -15,8 +15,10 @@ The following libraries support the ctrace specification.
 
 * **[ctrace-js](https://github.com/Nordstrom/ctrace-js)** - Canonical OpenTracing for Javascript
 * **[ctrace-go](https://github.com/Nordstrom/ctrace-go)** - Canonical OpenTracing for GoLang
-* **[ctrace-java](https://github.com/Nordstrom/ctrace-java)** - Canonical OpenTracing for Java
-* **[ctrace-net](https://github.com/Nordstrom/ctrace-net)** - Canonical OpenTracing for .NET
+* **[ctrace-py](https://github.com/Nordstrom/ctrace-py)** - Canonical OpenTracing for Python (FUTURE)
+* **[ctrace-java](https://github.com/Nordstrom/ctrace-java)** - Canonical OpenTracing for Java (FUTURE)
+* **[ctrace-net](https://github.com/Nordstrom/ctrace-net)** - Canonical OpenTracing for .NET (FUTURE)
+* **[ctrace-es](https://github.com/Nordstrom/ctrace-es)** - Canonical OpenTracing Visualizations for ElasticSearch (FUTURE)
 
 ## Canonical Format
 The format is JSON and is used to output data from a [Span](https://github.com/opentracing/specification/blob/master/specification.md) for 3 events:
@@ -86,6 +88,8 @@ The following are tags we recommend.
 |debug|bool|true if the Log is considered a debug log.  This can be used by ctrace implementations to exclude debug Logs from output.|
 |exception|string|Error message and/or stack trace.  Should be included if error=true.|
 |http.user_agent|string|HTTP UserAgent Header field.|
+|http.remote_addr|string|HTTP X-Forwarded-For, X-Forwarded, X-Cluster-Client-Ip, or Client IP.  Shows the originating address of the call.|
+
 
 
 ## Start-Span
@@ -105,7 +109,7 @@ in the Span at this time is output to the writable stream.  Here is an example.
     "http.url": "https://api.nordstrom.com/v1/products",
     "http.method": "POST",
     "http.user_agent": "Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/21.0",
-    "peer.ipv4": "192.168.1.2",
+    "http.remote_addr": "192.168.1.2",
     "styleId": "29392832",
     "sku": "293820133",
     "label": "New Pump"
@@ -135,7 +139,7 @@ populated by the key/values passed into the Log method.  Here is an example.
     "http.url": "https://api.nordstrom.com/v1/products",
     "http.method": "POST",
     "http.user_agent": "Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/21.0",
-    "peer.ipv4": "192.168.1.2",
+    "http.remote_addr": "192.168.1.2",
     "styleId": "29392832",
     "sku": "293820133",
     "label": "New Pump"
@@ -168,7 +172,7 @@ in the Span at this time is output to the writable stream.  Here is an example.
     "http.method": "POST",
     "http.user_agent": "Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/21.0",
     "http.status_code": 200,
-    "peer.ipv4": "192.168.1.2",
+    "http.remote_addr": "192.168.1.2",
     "styleId": "29392832",
     "sku": "293820133",
     "label": "New Pump"
