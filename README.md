@@ -10,6 +10,16 @@ ctrace specifies a canonical format for trace logs.  By default the logs are out
 ## Required Reading
 To fully understand this platform API, it's helpful to be familiar with the [OpenTracing project](http://opentracing.io) project, [terminology](http://opentracing.io/documentation/pages/spec.html), and [ctrace specification](https://github.com/Nordstrom/ctrace) more specifically.
 
+## High-level View
+The following shows how the ctrace format and libraries fit into a normal log aggregation strategy.
+
+![High-level View](ctrace.png)
+
+* Language libraries can be used to log trace events on Servers (EC2, K8 Instance, etc) to stdout (preferred) or a file.
+* Language libraries can be used to log trace events in AWS Lambdas to stdout which is forwarded to Cloud Watch Logs.
+* Logs are forwarded from Servers using traditional log forwarders (i.e. Logstash, Beats, Loggly, etc) to forward to your log collector / aggregator (i.e. Logstash / ElasticSearch, Loggly, etc)
+* Visualization libraries provide connected trace visualizations on top of your aggregator / search (i.e. ElasticSearch, Zipkin, Loggly, etc)
+
 ## Canonical Libraries
 The following libraries support the ctrace specification.
 
@@ -19,6 +29,8 @@ The following libraries support the ctrace specification.
 * **[ctrace-java](https://github.com/Nordstrom/ctrace-java)** - Canonical OpenTracing for Java (FUTURE)
 * **[ctrace-net](https://github.com/Nordstrom/ctrace-net)** - Canonical OpenTracing for .NET (FUTURE)
 * **[ctrace-es](https://github.com/Nordstrom/ctrace-es)** - Canonical OpenTracing Visualizations for ElasticSearch (FUTURE)
+* **[ctrace-zipkin](https://github.com/Nordstrom/ctrace-zipkin)** - Canonical OpenTracing translation to Zipkin format (FUTURE)
+
 
 ## Canonical Format
 The format is JSON and is used to output data from a [Span](https://github.com/opentracing/specification/blob/master/specification.md) for 3 events:
