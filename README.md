@@ -13,8 +13,8 @@ To fully understand this platform API, it's helpful to be familiar with the [Ope
 ## Canonical Libraries
 The following libraries support the ctrace specification.
 
-* **[ctrace-js](https://github.com/Nordstrom/ctrace-js)** - Canonical OpenTracing for Javascript
-* **[ctrace-go](https://github.com/Nordstrom/ctrace-go)** - Canonical OpenTracing for GoLang
+* **[ctrace-js](https://github.com/Nordstrom/ctrace-js/tree/new)** - Canonical OpenTracing for Javascript
+* **[ctrace-go](https://github.com/Nordstrom/ctrace-go/tree/new)** - Canonical OpenTracing for GoLang
 * **[ctrace-py](https://github.com/Nordstrom/ctrace-py)** - Canonical OpenTracing for Python (FUTURE)
 * **[ctrace-java](https://github.com/Nordstrom/ctrace-java)** - Canonical OpenTracing for Java (FUTURE)
 * **[ctrace-net](https://github.com/Nordstrom/ctrace-net)** - Canonical OpenTracing for .NET (FUTURE)
