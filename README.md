@@ -295,17 +295,36 @@ other than providing standard Carrier Format types (see [Note: required formats 
 ### Text Map Carrier Format
 The Text Map format is passed as a key/value map with the following definition.  All keys and values are output as strings.
 
-|Map Key|Description|Example|
-|-------|-----------|-------|
-|ct-trace-id|Trace ID.|"ct-trace-id":"0308745a0f03491b"|
-|ct-span-id|Span ID.|"ct-span-id":"940a9f22e7294a8c"|
-|ct-bag-*|Trace Baggage.  Each baggage key is prefixed with "ct-bag-".|"ct-bag-origin":"216.58.194.110/US/CA/Mountain View" or "ct-agent":"iPhone6/iOS 10.1.0"|
+|Map Key|Description|
+|-------|-----------|
+|ct-trace-id|Trace ID.|
+|ct-span-id|Span ID.|
+|ct-bag-*|Trace Baggage.  Each baggage key is prefixed with "ct-bag-".|
+
+#### Text Map Carrier Example
+```
+"ct-trace-id":"0308745a0f03491b"
+"ct-span-id":"940a9f22e7294a8c"
+"ct-bag-origin":"216.58.194.110/US/CA/Mountain View"
+"ct-bag-agent":"iPhone6/iOS 10.1.0"
+```
 
 ### HTTP Headers Carrier Format
 The HTTP Headers format is passed as header key/values with the following definition.  All keys and values are output as strings that adhere to [Header Fields 1.1 Spec](https://tools.ietf.org/html/rfc7230#section-3.2)
 
-|Header Key|Description|Example|
-|----------|-----------|-------|
-|X-CT-Trace-Id|Trace ID.|X-CT-Trace-Id: 0308745a0f03491b|
-|X-CT-Span-Id|Span ID.|X-CT-Span-Id: 940a9f22e7294a8c|
-|X-CT-Bag-*|Trace Baggage.  Each baggage key is prefixed with "X-CT-Bag-" and its first character is capitalized and normalization applied to adhere to [Header Fields 1.1 Spec](https://tools.ietf.org/html/rfc7230#section-3.2).|X-CT-Bag-Origin: 216.58.194.110/US/CA/Mountain View or X-CT-Bag-Agent: iPhone6/iOS 10.1.0|
+|Header Key|Description|
+|----------|-----------|
+|X-CT-Trace-Id|Trace ID.|
+|X-CT-Span-Id|Span ID.|
+|X-CT-Bag-*|Trace Baggage.  Each baggage key is prefixed with "X-CT-Bag-" and its first character is capitalized and normalization applied to adhere to [Header Fields 1.1 Spec](https://tools.ietf.org/html/rfc7230#section-3.2).|
+
+#### HTTP Headers Carrier Example
+```
+X-CT-Trace-Id: 0308745a0f03491b
+X-CT-Span-Id: 940a9f22e7294a8c
+X-CT-Bag-Origin: 216.58.194.110/US/CA/Mountain View
+X-CT-Bag-Agent: iPhone6/iOS 10.1.0
+```
+
+### Binary Carrier Format
+TBD 
