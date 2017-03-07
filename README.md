@@ -181,7 +181,7 @@ a Span log is given, or Span is finished respectively.  The logs output for each
 corresponds to that event as opposed to Single-Event Mode which outputs all of the logs for the entire
 Span at the time it is finished.
 
-## Start-Span
+### Start-Span
 The Start-Span event is triggered when the Span is started.  All of the data present
 in the Span at this time is output to the writable stream.  Here is an example.
 
@@ -215,7 +215,7 @@ in the Span at this time is output to the writable stream.  Here is an example.
 }
 ```
 
-## Log
+### Log
 The Log event is triggered when Span.Log is called.  All of the data present in
 the Span at this time is output to the writable stream with the log field being
 populated by the key/values passed into the Log method.  Here is an example.
@@ -252,7 +252,7 @@ populated by the key/values passed into the Log method.  Here is an example.
 }
 ```
 
-## Finish-Span
+### Finish-Span
 The Finish-Span event is triggered when the Span is finished.  All of the data present
 in the Span at this time is output to the writable stream.  Here is an example.
 
@@ -287,3 +287,25 @@ in the Span at this time is output to the writable stream.  Here is an example.
   }
 }
 ```
+
+## Carrier Formats
+OpenTracing does not specify implementation details for transmitting SpanContext over the wire
+other than providing standard Carrier Format types (see [Note: required formats for injection and extraction](https://github.com/opentracing/specification/blob/master/specification.md#note-required-formats-for-injection-and-extraction)).  ctrace provides canonical formats for these Carrier Types.
+
+### Text Map Carrier Format
+The Text Map format is passed as a key/value map with the following definition.  All keys and values are output as strings.
+
+|Map Key|Description|Example|
+|-------|-----------|-------|
+|ct-trace-id|Trace ID.|"ct-trace-id":"0308745a0f03491b"|
+|ct-span-id|Span ID.|"ct-span-id":"940a9f22e7294a8c"|
+|ct-bag-*|Trace Baggage.  Each baggage key is prefixed with "ct-bag-".|"ct-bag-origin":"216.58.194.110/US/CA/Mountain View" or "ct-agent":"iPhone6/iOS 10.1.0"|
+
+### HTTP Headers Carrier Format
+The HTTP Headers format is passed as header key/values with the following definition.  All keys and values are output as strings that adhere to [Header Fields 1.1 Spec](https://tools.ietf.org/html/rfc7230#section-3.2)
+
+|Header Key|Description|Example|
+|----------|-----------|-------|
+|X-CT-Trace-Id|Trace ID.|X-CT-Trace-Id: 0308745a0f03491b|
+|X-CT-Span-Id|Span ID.|X-CT-Span-Id: 940a9f22e7294a8c|
+|X-CT-Bag-*|Trace Baggage.  Each baggage key is prefixed with "X-CT-Bag-" and its first character is capitalized and normalization applied to adhere to [Header Fields 1.1 Spec](https://tools.ietf.org/html/rfc7230#section-3.2).|X-CT-Bag-Origin: 216.58.194.110/US/CA/Mountain View or X-CT-Bag-Agent: iPhone6/iOS 10.1.0|
