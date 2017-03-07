@@ -297,9 +297,9 @@ The Text Map format is passed as a key/value map with the following definition. 
 
 |Map Key|Description|
 |-------|-----------|
-|ct-trace-id|Trace ID.|
-|ct-span-id|Span ID.|
-|ct-bag-*|Trace Baggage.  Each baggage key is prefixed with "ct-bag-".|
+|`ct-trace-id`|Trace ID.|
+|`ct-span-id`|Span ID.|
+|`ct-bag-*`|Trace Baggage.  Each baggage key is prefixed with `ct-bag-``.|
 
 #### Text Map Carrier Example
 ```
@@ -314,9 +314,9 @@ The HTTP Headers format is passed as header key/values with the following defini
 
 |Header Key|Description|
 |----------|-----------|
-|X-CT-Trace-Id|Trace ID.|
-|X-CT-Span-Id|Span ID.|
-|X-CT-Bag-*|Trace Baggage.  Each baggage key is prefixed with "X-CT-Bag-" and its first character is capitalized and normalization applied to adhere to [Header Fields 1.1 Spec](https://tools.ietf.org/html/rfc7230#section-3.2).|
+|`X-CT-Trace-Id`|Trace ID.|
+|`X-CT-Span-Id`|Span ID.|
+|`X-CT-Bag-*`|Trace Baggage.  Each baggage key is prefixed with `X-CT-Bag-` and its first character is capitalized and normalization applied to adhere to [Header Fields 1.1 Spec](https://tools.ietf.org/html/rfc7230#section-3.2).|
 
 #### HTTP Headers Carrier Example
 ```
@@ -327,4 +327,4 @@ X-CT-Bag-Agent: iPhone6/iOS 10.1.0
 ```
 
 ### Binary Carrier Format
-TBD 
+TBD
