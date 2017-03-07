@@ -295,13 +295,12 @@ other than providing standard Carrier Format types (see [Note: required formats 
 ### Text Map Carrier Format
 The Text Map format is passed as a key/value map with the following definition.  All keys and values are output as strings.
 
-|Map Key|Description|
-|-------|-----------|
-|`ct-trace-id`|Trace ID.|
-|`ct-span-id`|Span ID.|
-|`ct-bag-*`|Trace Baggage.  Each baggage key is prefixed with `ct-bag-``.|
+* `ct-trace-id` - Trace ID.
+* `ct-span-id` - Span ID.
+* `ct-bag-*` - Trace Baggage.  Each baggage key is prefixed with `ct-bag-`
 
-#### Text Map Carrier Example
+For example
+
 ```
 "ct-trace-id":"0308745a0f03491b"
 "ct-span-id":"940a9f22e7294a8c"
@@ -312,13 +311,11 @@ The Text Map format is passed as a key/value map with the following definition. 
 ### HTTP Headers Carrier Format
 The HTTP Headers format is passed as header key/values with the following definition.  All keys and values are output as strings that adhere to [Header Fields 1.1 Spec](https://tools.ietf.org/html/rfc7230#section-3.2)
 
-|Header Key|Description|
-|----------|-----------|
-|`X-CT-Trace-Id`|Trace ID.|
-|`X-CT-Span-Id`|Span ID.|
-|`X-CT-Bag-*`|Trace Baggage.  Each baggage key is prefixed with `X-CT-Bag-` and its first character is capitalized and normalization applied to adhere to [Header Fields 1.1 Spec](https://tools.ietf.org/html/rfc7230#section-3.2).|
+* `X-CT-Trace-Id` - Trace ID.
+* `X-CT-Span-Id` - Span ID.
+* `X-CT-Bag-*` - Trace Baggage.  Each baggage key is prefixed with `X-CT-Bag-` and its first character is capitalized and normalization applied to adhere to [Header Fields 1.1 Spec](https://tools.ietf.org/html/rfc7230#section-3.2).
 
-#### HTTP Headers Carrier Example
+For example
 ```
 X-CT-Trace-Id: 0308745a0f03491b
 X-CT-Span-Id: 940a9f22e7294a8c
