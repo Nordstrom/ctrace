@@ -311,17 +311,20 @@ For example
 ### HTTP Headers Carrier Format
 The HTTP Headers format is passed as header key/values with the following definition.  All keys and values are output as strings that adhere to [Header Fields 1.1 Spec](https://tools.ietf.org/html/rfc7230#section-3.2)
 
-* `X-CT-Trace-Id` - Trace ID.
-* `X-CT-Span-Id` - Span ID.
-* `X-CT-Bag-*` - Trace Baggage.  Each baggage key is prefixed with `X-CT-Bag-` and its first character is capitalized and normalization applied to adhere to [Header Fields 1.1 Spec](https://tools.ietf.org/html/rfc7230#section-3.2).
+* `Ct-Trace-Id` - Trace ID.
+* `Ct-Span-Id` - Span ID.
+* `Ct-Bag-*` - Trace Baggage.  Each baggage key is prefixed with `Ct-Bag-` and its first character is capitalized and normalization applied to adhere to [Header Fields 1.1 Spec](https://tools.ietf.org/html/rfc7230#section-3.2).
 
 For example
 ```
-X-CT-Trace-Id: 0308745a0f03491b
-X-CT-Span-Id: 940a9f22e7294a8c
-X-CT-Bag-Origin: 216.58.194.110/US/CA/Mountain View
-X-CT-Bag-Agent: iPhone6/iOS 10.1.0
+Ct-Trace-Id: 0308745a0f03491b
+Ct-Span-Id: 940a9f22e7294a8c
+Ct-Bag-Origin: 216.58.194.110/US/CA/Mountain View
+Ct-Bag-Agent: iPhone6/iOS 10.1.0
 ```
+
+> NOTE: For consistency across languages and platforms, be sure that baggage is all lowercase.  Some languages and
+> frameworks force standard header key format.  Making baggage all lowercase makes translation in such cases an easier task.
 
 ### Binary Carrier Format
 TBD
