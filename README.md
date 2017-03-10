@@ -23,8 +23,8 @@ The following shows how the ctrace format and libraries fit into a normal log ag
 ## Canonical Libraries
 The following libraries support the ctrace specification.
 
-* **[ctrace-js](https://github.com/Nordstrom/ctrace-js/tree/new)** - Canonical OpenTracing for Javascript
-* **[ctrace-go](https://github.com/Nordstrom/ctrace-go/tree/new)** - Canonical OpenTracing for GoLang
+* **[ctrace-js](https://github.com/Nordstrom/ctrace-js)** - Canonical OpenTracing for Javascript
+* **[ctrace-go](https://github.com/Nordstrom/ctrace-go)** - Canonical OpenTracing for GoLang
 * **[ctrace-py](https://github.com/Nordstrom/ctrace-py)** - Canonical OpenTracing for Python (FUTURE)
 * **[ctrace-java](https://github.com/Nordstrom/ctrace-java)** - Canonical OpenTracing for Java (FUTURE)
 * **[ctrace-net](https://github.com/Nordstrom/ctrace-net)** - Canonical OpenTracing for .NET (FUTURE)
@@ -301,7 +301,7 @@ The Text Map format is passed as a key/value map with the following definition. 
 
 For example
 
-```
+  ```
 "ct-trace-id":"0308745a0f03491b"
 "ct-span-id":"940a9f22e7294a8c"
 "ct-bag-origin":"216.58.194.110/US/CA/Mountain View"
