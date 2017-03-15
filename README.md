@@ -102,7 +102,7 @@ Span tags apply to **the entire Span**; as such, they apply to the entire timera
 
 |Span Tag|Type|Description|
 |---|----|-----------|
-|debug|bool|true if the span is considered a debug span.  This can be used by ctrace implementations to exclude these spans from output when debugging is not enabled.|
+|debug|bool|true if the span is considered a debug span. This can be used by ctrace implementations to exclude these spans from output when debugging is not enabled.|
 |http.user_agent|string|HTTP UserAgent Header field.|
 |http.remote_addr|string|HTTP X-Forwarded-For, X-Forwarded, X-Cluster-Client-Ip, or Client IP.  Shows the originating address of the call.|
 
@@ -111,14 +111,9 @@ Every Span log has a specific timestamp (which must fall between the start and f
 
 |Log Field|Type|Description|
 |-------------------|----|-----------|
-|debug|bool|true if the log is considered a debug log.  This can be used by ctrace implementations to exclude these logs from output when debugging is not enabled.  NOTE: If the log belongs to a span that is also debug=true, setting
-the log to debug=true is not necessary as the debug span will include any logs in this same debug state.|
-|http.request_body|string|In cases where there is an error detected in HTTP request handling, this field can be
-used to output the request body.  This can also be used in success requests as well, but it is discouraged as
-a general practice.|
-|http.response_body|string|In cases where there is an error detected in HTTP request handling, this field can be
-used to output the response body.  This can also be used in success responses as well, but it is discouraged as
-a general practice.|
+|debug|bool|true if the log is considered a debug log.  This can be used by ctrace implementations to exclude these logs from output when debugging is not enabled.  NOTE: If the log belongs to a span that is also debug=true, setting the log to debug=true is not necessary as the debug span will include any logs in this same debug state.|
+|http.request_body|string|In cases where there is an error detected in HTTP request handling, this field can be used to output the request body.  This can also be used in success requests as well, but it is discouraged as a general practice.|
+|http.response_body|string|In cases where there is an error detected in HTTP request handling, this field can be used to output the response body.  This can also be used in success responses as well, but it is discouraged as a general practice.|
 
 ### Recommended Trace Baggage
 Trace Baggage apply to **the entire Trace**; as such, they are transferred (in process or over the wire)
