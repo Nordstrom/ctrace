@@ -1,3 +1,5 @@
+[![OpenTracing Badge](https://img.shields.io/badge/OpenTracing-enabled-blue.svg)](http://opentracing.io)
+
 # ctrace
 Canonical Trace.  ctrace is a Canonical [OpenTracing](http://opentracing.io/) output specification.  
 
