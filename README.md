@@ -70,6 +70,7 @@ Here is the format:
                   stage within a larger computation). ",
   "start":      " UTC Epoch Unix Timestamp in Microseconds as JSON Number representing time at
                   which this Span was started. ",
+  "duration":   " Number of Microseconds since the time this Span was started. ",
   "tags": {
     "...":      " tags is a single-level JSON Object representing key/values of custom tags or data
                   for this Span.  If there are no tags, the tags object is excluded."
