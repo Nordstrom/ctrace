@@ -105,6 +105,7 @@ Span tags apply to **the entire Span**; as such, they apply to the entire timera
 
 |Span Tag|Type|Description|
 |---|----|-----------|
+|service|string|Specifies the service or application on which this Span was created.|
 |debug|bool|true if the span is considered a debug span. This can be used by ctrace implementations to exclude these spans from output when debugging is not enabled.|
 |http.user_agent|string|HTTP UserAgent Header field.|
 |http.remote_addr|string|HTTP X-Forwarded-For, X-Forwarded, X-Cluster-Client-Ip, or Client IP.  Shows the originating address of the call.|
