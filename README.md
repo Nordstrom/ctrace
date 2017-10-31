@@ -28,70 +28,40 @@ The following libraries support the ctrace specification.
 * **[ctrace-js](https://github.com/Nordstrom/ctrace-js)** - Canonical OpenTracing for Javascript
 * **[ctrace-go](https://github.com/Nordstrom/ctrace-go)** - Canonical OpenTracing for GoLang
 * **[ctrace-py](https://github.com/Nordstrom/ctrace-py)** - Canonical OpenTracing for Python (FUTURE)
-* **[ctrace-java](https://github.com/Nordstrom/ctrace-java)** - Canonical OpenTracing for Java (FUTURE)
+* **[ctrace-java](https://github.com/Nordstrom/ctrace-java)** - Canonical OpenTracing for Java (IN-PROGRESS)
 * **[ctrace-net](https://github.com/Nordstrom/ctrace-net)** - Canonical OpenTracing for .NET (FUTURE)
 * **[ctrace-es](https://github.com/Nordstrom/ctrace-es)** - Canonical OpenTracing Visualizations for ElasticSearch (FUTURE)
 * **[ctrace-zipkin](https://github.com/Nordstrom/ctrace-zipkin)** - Canonical OpenTracing translation to Zipkin format (FUTURE)
 
 
-## Canonical Events
+## Output Modes
 ctrace supports 2 modes of output.
 
 * **Single-Event**: In this mode only one output event is sent per Span.  This mode is the default mode.
 * **Multi-Event**: In this mode multiple output events are sent per Span.
 
-### Single-Event Mode
-In this mode the following output event is sent per Span.  This mode is the default mode.
-
-* **Finish-Span** - This event is triggered when Span.Finish is called to finish or close the Span.  In this mode, the tags, logs, and baggage are all collected during the Span lifetime and output when Span.Finish
-is called.
-
-### Multi-Event Mode
-In this mode output a sent for Start-Span, Log, and Finish-Span events.  Logs only are only output for the log corresponding
+### Log Output Mode
+In this mode output is sent for Start-Span, Log, and Finish-Span events.  Logs only are only output for the log corresponding
 to the event begin output.  Here are the output events for multi-event mode.
 
 * **Start-Span** - This event is triggered when Tracer.StartSpan is called to create a new Span.
 * **Log** - This event is triggered when Span.Log is called to log an event within the Span.
 * **Finish-Span** - This event is triggered when Span.Finish is called to finish or close the Span.
 
-## Canonical Format
+### Span Output Mode
+In this mode the following output event is sent per Span.  This mode is the default mode.
+
+* **Finish-Span** - This event is triggered when Span.Finish is called to finish or close the Span.  In this mode, the tags, logs, and baggage are all collected during the Span lifetime and output when Span.Finish
+is called.
+
+## Canonical Formats
+
+### JSON Format
 The format is JSON and is used to output data from a [Span](https://github.com/opentracing/specification/blob/master/specification.md).
 
-Here is the format:
-
-```json
-{
-  "traceId":    " UInt64 in Hex (Base 16) representing the unique id of the entire multi-span Trace. ",
-  "spanId":     " UInt64 in Hex (Base 16) representing the unique id of this Span. ",
-  "parentId":   " UInt64 in Hex (Base 16) representing the unique id of the Parent to this Span.  
-                  If this is an originating Span, this field is excluded. ",
-  "operation":  " A human-readable string which concisely represents the work done by the Span
-                  (for example, an RPC method name, a function name, or the name of a subtask or
-                  stage within a larger computation). ",
-  "start":      " UTC Epoch Unix Timestamp in Microseconds as JSON Number representing time at
-                  which this Span was started. ",
-  "duration":   " Number of Microseconds since the time this Span was started. ",
-  "tags": {
-    "...":      " tags is a single-level JSON Object representing key/values of custom tags or data
-                  for this Span.  If there are no tags, the tags object is excluded."
-  },
-  "logs": [{
-    "timestamp": " UTC Epoch Unix Timestamp in Microseconds as JSON Number representing time at
-                   which this Span was started. ",
-    "event":     " A stable identifier for some notable moment in the lifetime of a Span.  
-                   For Start-Span and Finish-Span events this is Start-Span and Finish-Span respectively.
-                   For Log event this is specified as on of the log key/values.  
-                   If not, the word Log is used. ",
-    "...":       " For Log events there may be other key/values given.  They are included as
-                   part of the log object. "
-  }],
-  "baggage": {
-    "...":       " baggage is a single-level JSON Object representing key/values of custom baggage or data
-                   for the entire Trace that is carried from Span to Span.  If there are is no
-                   baggage, the baggage object is excluded. "
-  }
-}
-```
+### Text Format
+Similar to the [logfmt](https://godoc.org/github.com/kr/logfmt) format, this format outputs in a key=value format.  It is useful for
+a more readable unstructured format.  Logfmt format is only available for Log Output Mode.
 
 ## Standard Span Tags and Log Fields
 See [Semantic Conventions](https://github.com/opentracing/specification/blob/master/semantic_conventions.md)
@@ -130,9 +100,229 @@ can bloat data over the wire and cause performance repercussions.  We recommend 
 |agent|string|Identifies the processed user agent of the top-level request or RPC call.  This is different than the http.user_agent tag because it is for the top-level request and it has been processed, filtered, or normalized to be more useful for matching.  This tag is useful for tracking, debugging, and defending against attack traffic.|
 |user|string|This represents opaque or obfuscated identification (opaque id, auth token, or similar) of the user of the top-level request or RPC call.  It is useful for tracking, debugging, and defending against attack traffic.|
 
-## Single-Event Mode
+## Log Output Mode
+In Log Output Mode, the Start-Span, Log, and Finish-Span events are triggered when the Span is started,
+a Span log is given, or Span is finished respectively.  The logs output for each event has only 1 log that
+corresponds to that event as opposed to Single-Event Mode which outputs all of the logs for the entire
+Span at the time it is finished.
+
+### JSON Format
+JSON Format in Log Output Mode takes the following form:
+
+```json
+{
+  "traceId":    " UInt64 in Hex (Base 16) representing the unique id of the entire multi-span Trace. ",
+  "spanId":     " UInt64 in Hex (Base 16) representing the unique id of this Span. ",
+  "parentId":   " UInt64 in Hex (Base 16) representing the unique id of the Parent to this Span.  
+                  If this is an originating Span, this field is excluded. ",
+  "service":    " A human-readable string which concisely represents the service or application
+                  in which this span occurred.",
+  "operation":  " A human-readable string which concisely represents the work done by the Span
+                  (for example, an RPC method name, a function name, or the name of a subtask or
+                  stage within a larger computation). ",
+  "start":      " UTC Epoch Unix Timestamp in Microseconds as JSON Number representing time at
+                  which this Span was started. ",
+  "duration":   " Number of Microseconds since the time this Span was started. ",
+  "tags": {
+    "...":      " tags is a single-level JSON Object representing key/values of custom tags or data
+                  for this Span.  If there are no tags, the tags object is excluded.  By default tags are
+                  only output on Start-Span and Finish-Span events.  Optionally they can also be output
+                  for Logs as well by setting the IncludeTagsInLogs flag to true."
+  },
+  "log": {
+    "timestamp": " UTC Epoch Unix Timestamp in Microseconds as JSON Number representing time at
+                   which this Span was started. ",
+    "event":     " A stable identifier for some notable moment in the lifetime of a Span.  
+                   For Start-Span and Finish-Span events this is Start-Span and Finish-Span respectively.
+                   For Log event this is specified as on of the log key/values.  
+                   If not, the word Log is used. ",
+    "...":       " For Log events there may be other key/values given.  They are included as
+                   part of the log object. "
+  },
+  "baggage": {
+    "...":       " baggage is a single-level JSON Object representing key/values of custom baggage or data
+                   for the entire Trace that is carried from Span to Span.  If there are is no
+                   baggage, the baggage object is excluded. By default baggage is only output on Start-Span
+                   and Finish-Span events.  Optionally it can also be output for Logs as well by setting
+                   the IncludeBaggageInLogs flag to true."
+  }
+}
+```
+
+#### Start-Span
+The Start-Span event is triggered when the Span is started.  All of the data present
+in the Span at this time is output to the writable stream.  Here is an example in JSON Format.
+
+```json
+{
+  "traceId": "0308745a0f03491b",
+  "spanId": "940a9f22e7294a8c",
+  "parentId": "19d0ea9d414f47f1",
+  "service": "ProductService",
+  "operation": "CreateProduct",
+  "start": 1458702548467393239,
+  "tags": {
+    "component": "ProductUpdater",
+    "span.kind": "server",
+    "http.url": "https://api.nordstrom.com/v1/products",
+    "http.method": "POST",
+    "http.user_agent": "Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/21.0",
+    "http.remote_addr": "192.168.1.2",
+    "styleId": "29392832",
+    "sku": "293820133",
+    "label": "New Pump"
+  },
+  "logs": [{
+  	"timestamp": 1458702548467393239,
+  	"event": "Start-Span"
+  }],
+  "baggage": {
+    "origin": "216.58.194.110/US/CA/Mountain View",
+    "agent": "iPhone6/iOS 10.1.0",
+    "user": "83b60620f7364a8c8f07d91ccb009999"
+  }
+}
+```
+
+#### Log
+The Log event is triggered when Span.Log is called.  All of the data present in
+the Span at this time is output to the writable stream with the log field being
+populated by the key/values passed into the Log method.  Here is an example in JSON Format.
+
+```json
+{
+  "traceId": "0308745a0f03491b",
+  "spanId": "940a9f22e7294a8c",
+  "parentId": "19d0ea9d414f47f1",
+  "service": "ProductService",
+  "operation": "CreateProduct",
+  "start": 1458702548467393239,
+  "log": {
+    "timestamp": 1458702548467399939,
+    "event": "UpdateProductRecord",
+    "table": "Products",
+    "transactionId": "xxxy39282"
+  }
+}
+```
+
+#### Finish-Span
+The Finish-Span event is triggered when the Span is finished.  All of the data present
+in the Span at this time is output to the writable stream.  Here is an example in JSON Format.
+
+```json
+{
+  "traceId": "0308745a0f03491b",
+  "spanId": "940a9f22e7294a8c",
+  "parentId": "19d0ea9d414f47f1",
+  "service": "ProductService",
+  "operation": "CreateProduct",
+  "start": 1458702548467393239,
+  "duration": 738,
+  "tags": {
+    "component": "ProductUpdater",
+    "span.kind": "server",
+    "http.url": "https://api.nordstrom.com/v1/products",
+    "http.method": "POST",
+    "http.user_agent": "Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/21.0",
+    "http.status_code": 200,
+    "http.remote_addr": "192.168.1.2",
+    "styleId": "29392832",
+    "sku": "293820133",
+    "label": "New Pump"
+  },
+  "logs": [{
+    "timestamp": 1458702548467393239,
+    "event": "Finish-Span"
+  }],
+  "baggage": {
+    "origin": "216.58.194.110/US/CA/Mountain View",
+    "agent": "iPhone6/iOS 10.1.0",
+    "user": "83b60620f7364a8c8f07d91ccb009999"
+  }
+}
+```
+
+### Text Format
+Text format for Log Output Mode takes the following form:
+
+```
+2015-03-26T01:27:38-04:00 TRACE --Start-Span-- [traceId=xxxxxxxxxxxxxxxx spanId=xxxxxxxxxxxxxxxx parentId=xxxxxxxxxxxxxxxx service=xxxxxx operation=xxxxxxxx] [start=xxxxxxxx] [tag1=xxxxx tag2=xxxxxxx]
+2015-03-26T01:27:38-04:12 INFO Some Info Log [traceId=xxxxxxxxxxxxxxxx spanId=xxxxxxxxxxxxxxxx parentId=xxxxxxxxxxxxxxxx service=xxxxxxx operation=xxxxxxx]
+2015-03-26T01:27:38-04:00 TRACE --Finish-Span-- [traceId=xxxxxxxxxxxxxxxx spanId=xxxxxxxxxxxxxxxx parentId=xxxxxxxxxxxxxxxx service=xxxxxx operation=xxxxxxxx] [start=xxxxxxxxxxxxxx duration=xxxxxxxxxxx] [tag1=xxxxx tag2=xxxxxxx]
+```
+
+#### Start-Span
+The Start-Span event is triggered when the Span is started.  All of the data present
+in the Span at this time is output to the writable stream.  Here is an example in JSON Format.
+
+```
+2015-03-26T01:27:38-04:00 TRACE --Start-Span-- [traceId=0308745a0f03491b spanId=940a9f22e7294a8c parentId=19d0ea9d414f47f1 service=ProductService operation=CreateProduct] [start=1458702548467393239] [component=ProductUpdater span.kind=server http.url=https://api.nordstrom.com/v1/products
+http.method=POST http.user_agent=Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/21.0 http.remote_addr=192.168.1.2 styleId=29392832 sku=293820133 label=New Pump]
+```
+
+#### Log
+The Log event is triggered when Span.Log is called.  All of the data present in
+the Span at this time is output to the writable stream with the log field being
+populated by the key/values passed into the Log method.  Here is an example in Text Format.
+
+```
+2015-03-26T01:27:38-04:12 INFO Some Info Log [traceId=0308745a0f03491b spanId=940a9f22e7294a8c parentId=19d0ea9d414f47f1 service=ProductService operation=CreateProduct]
+```
+
+### Finish-Span
+The Finish-Span event is triggered when the Span is finished.  All of the data present
+in the Span at this time is output to the writable stream.  Here is an example in Text Format.
+
+```
+2015-03-26T01:27:38-04:00 TRACE --Finish-Span-- [traceId=0308745a0f03491b spanId=940a9f22e7294a8c parentId=19d0ea9d414f47f1 service=ProductService operation=CreateProduct] [start=1458702548467393239] [component=ProductUpdater span.kind=server http.url=https://api.nordstrom.com/v1/products
+http.method=POST http.user_agent=Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/21.0 http.remote_addr=192.168.1.2 styleId=29392832 sku=293820133 label=New Pump]
+```
+
+## Span Output Mode
 In Single-Event Mode, the Finish-Span event is triggered when the Span is finished.  All of the data present
-in the Span at this time is output to the writable stream.  Here is an example.
+in the Span at this time is output to the writable stream.
+
+### JSON Format
+For Single Span Output Mode, JSON Format is as follows:
+
+```json
+{
+  "traceId":    " UInt64 in Hex (Base 16) representing the unique id of the entire multi-span Trace. ",
+  "spanId":     " UInt64 in Hex (Base 16) representing the unique id of this Span. ",
+  "parentId":   " UInt64 in Hex (Base 16) representing the unique id of the Parent to this Span.  
+                  If this is an originating Span, this field is excluded. ",
+  "service":    " A human-readable string which concisely represents the service or application
+                  in which this span occurred.",
+  "operation":  " A human-readable string which concisely represents the work done by the Span
+                  (for example, an RPC method name, a function name, or the name of a subtask or
+                  stage within a larger computation). ",
+  "start":      " UTC Epoch Unix Timestamp in Microseconds as JSON Number representing time at
+                  which this Span was started. ",
+  "duration":   " Number of Microseconds since the time this Span was started. ",
+  "tags": {
+    "...":      " tags is a single-level JSON Object representing key/values of custom tags or data
+                  for this Span.  If there are no tags, the tags object is excluded."
+  },
+  "logs": [{
+    "timestamp": " UTC Epoch Unix Timestamp in Microseconds as JSON Number representing time at
+                   which this Span was started. ",
+    "event":     " A stable identifier for some notable moment in the lifetime of a Span.  
+                   For Start-Span and Finish-Span events this is Start-Span and Finish-Span respectively.
+                   For Log event this is specified as on of the log key/values.  
+                   If not, the word Log is used. ",
+    "...":       " For Log events there may be other key/values given.  They are included as
+                   part of the log object. "
+  }],
+  "baggage": {
+    "...":       " baggage is a single-level JSON Object representing key/values of custom baggage or data
+                   for the entire Trace that is carried from Span to Span.  If there are is no
+                   baggage, the baggage object is excluded. "
+  }
+}
+```
+
+For example:
 
 ```json
 {
@@ -165,119 +355,6 @@ in the Span at this time is output to the writable stream.  Here is an example.
   },{
     "timestamp": 1458702548467393239,
     "event": "Start-Span"
-  }],
-  "baggage": {
-    "origin": "216.58.194.110/US/CA/Mountain View",
-    "agent": "iPhone6/iOS 10.1.0",
-    "user": "83b60620f7364a8c8f07d91ccb009999"
-  }
-}
-```
-
-## Multi-Event Mode
-In Multi-Event Mode, the Start-Span, Log, and Finish-Span events are triggered when the Span is started,
-a Span log is given, or Span is finished respectively.  The logs output for each event has only 1 log that
-corresponds to that event as opposed to Single-Event Mode which outputs all of the logs for the entire
-Span at the time it is finished.
-
-### Start-Span
-The Start-Span event is triggered when the Span is started.  All of the data present
-in the Span at this time is output to the writable stream.  Here is an example.
-
-```json
-{
-  "traceId": "0308745a0f03491b",
-  "spanId": "940a9f22e7294a8c",
-  "parentId": "19d0ea9d414f47f1",
-  "operation": "CreateProduct",
-  "start": 1458702548467393239,
-  "tags": {
-    "component": "ProductUpdater",
-    "span.kind": "server",
-    "http.url": "https://api.nordstrom.com/v1/products",
-    "http.method": "POST",
-    "http.user_agent": "Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/21.0",
-    "http.remote_addr": "192.168.1.2",
-    "styleId": "29392832",
-    "sku": "293820133",
-    "label": "New Pump"
-  },
-  "logs": [{
-  	"timestamp": 1458702548467393239,
-  	"event": "Start-Span"
-  }],
-  "baggage": {
-    "origin": "216.58.194.110/US/CA/Mountain View",
-    "agent": "iPhone6/iOS 10.1.0",
-    "user": "83b60620f7364a8c8f07d91ccb009999"
-  }
-}
-```
-
-### Log
-The Log event is triggered when Span.Log is called.  All of the data present in
-the Span at this time is output to the writable stream with the log field being
-populated by the key/values passed into the Log method.  Here is an example.
-
-```json
-{
-  "traceId": "0308745a0f03491b",
-  "spanId": "940a9f22e7294a8c",
-  "parentId": "19d0ea9d414f47f1",
-  "operation": "CreateProduct",
-  "start": 1458702548467393239,
-  "tags": {
-    "component": "ProductUpdater",
-    "span.kind": "server",
-    "http.url": "https://api.nordstrom.com/v1/products",
-    "http.method": "POST",
-    "http.user_agent": "Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/21.0",
-    "http.remote_addr": "192.168.1.2",
-    "styleId": "29392832",
-    "sku": "293820133",
-    "label": "New Pump"
-  },
-  "logs": [{
-    "timestamp": 1458702548467399939,
-    "event": "UpdateProductRecord",
-    "table": "Products",
-    "transactionId": "xxxy39282"
-  }],
-  "baggage": {
-    "origin": "216.58.194.110/US/CA/Mountain View",
-    "agent": "iPhone6/iOS 10.1.0",
-    "user": "83b60620f7364a8c8f07d91ccb009999"
-  }
-}
-```
-
-### Finish-Span
-The Finish-Span event is triggered when the Span is finished.  All of the data present
-in the Span at this time is output to the writable stream.  Here is an example.
-
-```json
-{
-  "traceId": "0308745a0f03491b",
-  "spanId": "940a9f22e7294a8c",
-  "parentId": "19d0ea9d414f47f1",
-  "operation": "CreateProduct",
-  "start": 1458702548467393239,
-  "duration": 738,
-  "tags": {
-    "component": "ProductUpdater",
-    "span.kind": "server",
-    "http.url": "https://api.nordstrom.com/v1/products",
-    "http.method": "POST",
-    "http.user_agent": "Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/21.0",
-    "http.status_code": 200,
-    "http.remote_addr": "192.168.1.2",
-    "styleId": "29392832",
-    "sku": "293820133",
-    "label": "New Pump"
-  },
-  "logs": [{
-    "timestamp": 1458702548467393239,
-    "event": "Finish-Span"
   }],
   "baggage": {
     "origin": "216.58.194.110/US/CA/Mountain View",
@@ -325,5 +402,28 @@ Ct-Bag-Agent: iPhone6/iOS 10.1.0
 > NOTE: For consistency across languages and platforms, be sure that baggage is all lowercase.  Some languages and
 > frameworks force standard header key format.  Making baggage all lowercase makes translation in such cases an easier task.
 
-### Binary Carrier Format
-TBD
+#### HTTP Header Compatibility
+To be compatible with other Distributed Tracing implementations and/or proprietary log correlation, Ctrace supports the
+additional HTTP Headers
+
+* `X-B3-TraceId` - Zipkin TraceId - zipkinCompatible=true
+* `X-B3-SpanId` - Zipkin SpanId - zipkinCompatible=true
+* `X-B3-ParentSpanId` - Zipkin ParentSpanId - zipkinCompatible=true
+* `Custom TraceId` - Any proprietary header that can be mapped to the TraceId - traceIdHeaders=[]
+* `Custom SpanId` - Any proprietary header that can be mapped to the SpanId - spanIdHeaders=[]
+
+## Tracer Options
+The following options govern the Tracer:
+
+* `stream` - Output stream.  By default this goes to Stdout.
+* `logger` - If this is set, this logger is used to output instead of the Stream.
+* `serviceName` - Defines the `service` field output for this Tracer.  This field represents the unique friendly name of this service or application.
+* `outputMode` - Set to `span` for Single Span Output Mode and to `log` for Log Output Mode.  Defaults to `log`.
+* `outputFormat` - Set to `text` for Text Output Format and to `json` for Json Output Format.  Defaults to `text`.
+* `traceIdHeaders` - Set to a an array of headers that are compatible with TraceId.  If the `Ct-Trace-Id` header cannot be found, it will look for these headers as well.  When `Ct-Trace-Id` header is sent these headers will be sent also.
+* `spanIdHeaders` - Set to a an array of headers that are compatible with SpanId.  If the `Ct-Span-Id` header cannot be found, it will look for these headers as well.  When `Ct-Span-Id` header is sent these headers will be sent also.
+* `zipkinCompatibile` - If this is true, Zipkin B3 headers will be uses as fallback for incoming headers and will be output in addition to Ct headers.
+* `ignoreUrls` - An array of regex expressions of Urls to ignore when starting new spans.
+
+## Id Internal Format
+All Ids will be represented as Strings internally to allow Spans originated from systems with other Distributed Trace implementations to work seamlessly with Ctrace.
